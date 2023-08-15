@@ -1,0 +1,10 @@
+SET CHARACTER_SET_CLIENT=utf8mb4;
+SET CHARACTER_SET_CONNECTION=utf8mb4;
+
+CREATE TABLE todo (
+    id INT NOT NULL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    created_at DATETIME default CURRENT_TIMESTAMP NOT NULL,
+    updated_at DATETIME,
+    done BOOLEAN default 0
+)

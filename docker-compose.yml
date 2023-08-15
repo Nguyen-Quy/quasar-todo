@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  frontend:
+    build: ./frontend
+    image: quasar-todo-frontend:latest
+    container_name: quasar-todo-frontend
+    command: quasar dev --port 9000
+    ports:
+      - "9000:9000"
+    depends_on:
+      - backend
+  
+  mysql:
+    # build: ./db
+    image: mysql:8.0.23
+    container_name: quasar-todo-db
+    environment:
+      MYSQL_USER: quynd
+      MYSQL_ROOT_PASSWORD: quy1234
+      MYSQL_DATABASE: quasar_todo
+      MYSQL_PASSWORD: quy1234
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d
+    restart: always
+    ports:
+      - "3306:3306"
+
+  backend:
+    build: ./backend
+    image: quasar-todo-backend:latest
+    container_name: quasar-todo-backend
+    command: hug -f main.py -p 8888
+    ports:
+      - "8888:8888"
+    depends_on:
+      - mysql
+    volumes:
+      - ./backend:/app
+    environment:
+      - PYTHONUNBUFFERED=1
